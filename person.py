@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
 import turtle
 
 from config import *
@@ -32,7 +34,10 @@ class Person(object):
 
         self.turt.shape(shape)
 
-        # 健康状态，2 为确诊 红色/1 为潜伏 黄色/0 为健康 绿色
+        # health status:
+        # 2: confirmed-red
+        # 1: be in incubation-yellow
+        # 0: healthy-green
         #
         self.status = status
         if self.status == 2:
@@ -46,7 +51,7 @@ class Person(object):
         else:
             self.turt.color("green")
 
-        # 随机定义该点的位置
+        # people randomly appear
         self.x = random.randint(-TOTAL_W * 0.9, TOTAL_W * 0.9)
         self.y = random.randint(-TOTAL_H * 0.9, TOTAL_H * 0.9)
 
@@ -64,28 +69,28 @@ class Person(object):
             self.y += dy
         else:
             self.y -= dy
-        # 如果他们超出了边界就会往回走
+        # If they go beyond the margin, they will go back
         self.turt.penup()
         self.turt.goto(self.x, self.y)
 
     def infect(self, rate):
         x = random.randrange(0, 100)
         if x / 100 < rate:
-            self.status = 1  # 此人的状态进入潜伏期
-            self.infected_day = 0  # 有了感染天数，且变为0
+            self.status = 1  # be in period of incubation
+            self.infected_day = 0  #infected day
             self.turt.color('yellow')
             Person.infected_num += 1
 
     def day(self):
         if self.status > 0:
-            if self.infected_day >= 7:
+            if self.infected_day >= 7: #more than a week
                 x = random.randrange(0, 100)
-                if x / 100 < DEATH_Rate:  # 死亡率为5%
-                    # 确定死亡时返回某个值
+                if x / 100 < DEATH_Rate:
+                    # return -1 when died
                     return -1
         if self.status == 1:
             self.infected_day += 1
-            if self.infected_day >= 4:
+            if self.infected_day >= 4: #period of incubation is 4 days
                 x = random.randrange(0, 100)
                 if x / 100 < Diagnose_Rate:
                     self.status = 2
@@ -93,8 +98,8 @@ class Person(object):
         return 0
 
     def dead(self):
-        # 死亡以后颜色变为灰色
-        self.turt.color('gray')
+        # turn grey when died
+        self.turt.color('grey')
         Person.total_num -= 1
         Person.dead_num += 1
         if self.status > 0:

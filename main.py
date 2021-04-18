@@ -1,49 +1,49 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
 import math
 import datetime
-
-# 距离计算函数，计算两个人之间的距离
 import turtle
 
 from person import Person
 from config import *
 
-
+#calculate distance between two people
 def dis(point1, point2):
     d = math.sqrt((point1.x - point2.x) ** 2 + (point1.y - point2.y) ** 2)
     return d
 
 
-# turtle的相关设定
+# turtle settings
 turtle.setup(TOTAL_W * 2 + 200, TOTAL_H * 2, 0, 0)
 turtle.screensize(TOTAL_W, TOTAL_H)
 turtle.clearscreen()
 turtle.hideturtle()
 turtle.tracer(False)
 
-# 所有人的数组
+# All people
 people = []
 
-# 类属性的设置（其实可以用类方法）
+# init
 Person.infected_num = 0
 Person.total_num = 0
 
-# 健康人
+# healthy people
 for i in range(healthy_num):
     masked = random.random()
     vaccine = random.random()
     t1 = Person(0, masked < masked_rate, vaccine < vaccine_rate)
     people.append(t1)
 
-# 患者
+# infected people
 for i in range(infected_num):
     masked = random.random()
     vaccine = random.random()
     t1 = Person(1, masked < masked_rate, vaccine < vaccine_rate)
     people.append(t1)
 
-# 记录程序开始运行的时间
+# record start time
 start = datetime.datetime.now()
-# 开始
+# start
 day = 0
 count = 0
 while Person.infected_num < Person.total_num:
@@ -53,15 +53,15 @@ while Person.infected_num < Person.total_num:
                 continue
             if a.status == 0 and b.status > 0 and dis(a, b) < DANGER_DIS:
                 if a.vaccine:
-                    a.infect(INFECTED_RATE[a.mask][b.mask])
-                else:
                     a.infect(INFECTED_RATE_WITH_VACCINE[a.mask][b.mask])
+                else:
+                    a.infect(INFECTED_RATE[a.mask][b.mask])
     for a in people:
         a.move()
     turtle.update()
     #      time.sleep(1 / 300)
     count += 1
-    # 每次更新100帧率，为一天
+    # count==100, add one day
     if count > 100:
         day += 1
         count = 0
@@ -70,10 +70,10 @@ while Person.infected_num < Person.total_num:
                 p.dead()
                 people.remove(p)
 
-        title = "第 %d 天 现有病例：%d 死亡病例：%d 总人数：%d" % (day, Person.infected_num, Person.dead_num, Person.total_num)
+        title = "No. %d Day    All cases：%d    Death cases：%d    Total number of people：%d" % (day, Person.infected_num, Person.dead_num, Person.total_num)
         print(title)
         turtle.title(title)
 
 turtle.down()
 end = datetime.datetime.now()
-print("全部感染计算机用时", end - start, "模拟天数:", day, "天")
+print("Time of all infected", end - start, "Days:", day)
