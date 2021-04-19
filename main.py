@@ -23,17 +23,17 @@ Person.infected_num = 0
 Person.total_num = 0
 
 # healthy people
-for i in range(healthy_num):
+for i in range(HEALTHY_NUM):
     masked = random.random()
     vaccine = random.random()
-    t1 = Person(0, masked < masked_rate, vaccine < vaccine_rate)
+    t1 = Person(0, masked < MASKED_RATE, vaccine < VACCINE_RATE)
     people.append(t1)
 
 # infected people
-for i in range(infected_num):
+for i in range(INFECTED_NUM):
     masked = random.random()
     vaccine = random.random()
-    t1 = Person(1, masked < masked_rate, vaccine < vaccine_rate)
+    t1 = Person(1, masked < MASKED_RATE, vaccine < VACCINE_RATE)
     people.append(t1)
 
 # record start time
