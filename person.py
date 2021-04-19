@@ -12,8 +12,8 @@ class Person(object):
 
     def __init__(self, status, mask, vaccine):
         Person.total_num += 1
-        self.turt = turtle.Turtle()
-
+        self.turtle = turtle.Turtle()
+        # self.turtle.hideturtle()
         #         mask  vaccine
         # circle   0     0
         # square   0     1
@@ -32,7 +32,7 @@ class Person(object):
             else:
                 shape = 'triangle'
 
-        self.turt.shape(shape)
+        self.turtle.shape(shape)
 
         # health status:
         # 2: confirmed-red
@@ -43,20 +43,20 @@ class Person(object):
         if self.status == 2:
             self.infected_day = 0
             Person.infected_num += 1
-            self.turt.color("red")
+            self.turtle.color("red")
         elif self.status == 1:
             self.infected_day = 0
             Person.infected_num += 1
-            self.turt.color("yellow")
+            self.turtle.color("yellow")
         else:
-            self.turt.color("green")
+            self.turtle.color("green")
 
         # people randomly appear
         self.x = random.randint(-TOTAL_W * 0.9, TOTAL_W * 0.9)
         self.y = random.randint(-TOTAL_H * 0.9, TOTAL_H * 0.9)
 
-        self.turt.penup()
-        self.turt.goto(self.x, self.y)
+        self.turtle.penup()
+        self.turtle.goto(self.x, self.y)
 
     def move(self):
         dx = random.randint(-2, 2)
@@ -69,21 +69,22 @@ class Person(object):
             self.y += dy
         else:
             self.y -= dy
+        self.turtle.penup()
+        self.turtle.goto(self.x, self.y)
         # If they go beyond the margin, they will go back
-        self.turt.penup()
-        self.turt.goto(self.x, self.y)
+
 
     def infect(self, rate):
         x = random.randrange(0, 100)
         if x / 100 < rate:
             self.status = 1  # be in period of incubation
             self.infected_day = 0  #infected day
-            self.turt.color('yellow')
+            self.turtle.color('yellow')
             Person.infected_num += 1
 
     def day(self):
         if self.status > 0:
-            if self.infected_day >= 7: #more than a week
+            if self.infected_day >= VIRUS_LATENCY: #more than a week
                 x = random.randrange(0, 100)
                 if x / 100 < DEATH_Rate:
                     # return -1 when died
@@ -94,12 +95,12 @@ class Person(object):
                 x = random.randrange(0, 100)
                 if x / 100 < Diagnose_Rate:
                     self.status = 2
-                    self.turt.color('red')
+                    self.turtle.color('red')
         return 0
 
     def dead(self):
         # turn grey when died
-        self.turt.color('grey')
+        self.turtle.color('grey')
         Person.total_num -= 1
         Person.dead_num += 1
         if self.status > 0:
