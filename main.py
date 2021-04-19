@@ -53,10 +53,14 @@ while Person.infected_num < Person.total_num:
             if id(a) == id(b):
                 continue
             if a.status == 0 and b.status > 0 and dis(a, b) < DANGER_DIS:
-                if a.vaccine:
+                if not a.vaccine and not b.super:
                     a.infect(INFECTED_RATE[a.mask][b.mask])
-                else:
+                elif a.vaccine and not b.super:
                     a.infect(INFECTED_RATE_WITH_VACCINE[a.mask][b.mask])
+                elif not a.vaccine and b.super:
+                    a.infect(INFECTED_RATE_SUPER[a.mask][b.mask])
+                else:
+                    a.infect(INFECTED_RATE_WITH_VACCINE_SUPER[a.mask][b.mask])
     for a in people:
         a.move()
     turtle.update()

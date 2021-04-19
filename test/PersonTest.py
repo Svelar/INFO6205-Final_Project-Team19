@@ -44,6 +44,11 @@ class PersonTest(unittest.TestCase):
         p.day()
         self.assertEqual(p.status, 2)
 
+    def test_super(self):
+        p = Person(0, 0, 0)
+        p.super = True
+        self.assertTrue(p.isSuper())
+
 
 if __name__ == '__main__':
     unittest.main()

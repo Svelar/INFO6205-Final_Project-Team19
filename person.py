@@ -54,7 +54,7 @@ class Person(object):
         # people randomly appear
         self.x = random.randint(-TOTAL_W * 0.9, TOTAL_W * 0.9)
         self.y = random.randint(-TOTAL_H * 0.9, TOTAL_H * 0.9)
-
+        self.super = False
         self.turtle.penup()
         self.turtle.goto(self.x, self.y)
 
@@ -73,25 +73,27 @@ class Person(object):
         self.turtle.goto(self.x, self.y)
         # If they go beyond the margin, they will go back
 
-
     def infect(self, rate):
         x = random.randrange(0, 100)
         if x / 100 < rate:
             self.status = 1  # be in period of incubation
-            self.infected_day = 0  #infected day
+            self.infected_day = 0  # infected day
             self.turtle.color('yellow')
             Person.infected_num += 1
+        x = random.randrange(0, 100)
+        if x / 100 < SUPER_RATE:
+            self.super = True
 
     def day(self):
         if self.status > 0:
-            if self.infected_day >= VIRUS_LATENCY: #more than a week
+            if self.infected_day >= VIRUS_LATENCY:  # more than a week
                 x = random.randrange(0, 100)
                 if x / 100 < DEATH_Rate:
                     # return -1 when died
                     return -1
         if self.status == 1:
             self.infected_day += 1
-            if self.infected_day >= 4: #period of incubation is 4 days
+            if self.infected_day >= 4:  # period of incubation is 4 days
                 x = random.randrange(0, 100)
                 if x / 100 < Diagnose_Rate:
                     self.status = 2
@@ -110,3 +112,6 @@ class Person(object):
         Person.total_num -= 1
         if self.status > 0:
             Person.infected_num -= 1
+
+    def isSuper(self):
+        return self.super
