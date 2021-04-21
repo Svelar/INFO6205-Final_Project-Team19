@@ -102,8 +102,8 @@ class Person(object):
         return 0
 
     def dead(self):
-        # turn grey when died
-        self.turtle.color('grey')
+        # turn gray when died
+        self.turtle.color('gray')
         Person.total_num -= 1
         Person.dead_num += 1
         if self.status > 0:

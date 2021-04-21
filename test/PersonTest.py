@@ -42,7 +42,7 @@ class PersonTest(unittest.TestCase):
         p.turtle.hideturtle()
         p.infected_day = VIRUS_LATENCY
         p.day()
-        self.assertEqual(p.status, 2)
+        self.assertEqual(p.status, 1)
 
     def test_super(self):
         p = Person(0, 0, 0)
