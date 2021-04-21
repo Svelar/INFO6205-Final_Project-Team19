@@ -8,8 +8,10 @@ DANGER_DIS = 35  # when distance closer than this, may be infected
 # Infection Rate -COVID-19
 #
 COV_R0 = 5.7
-COV_K = 0.01
+COV_K = 0.1
 COV_S = COV_R0 / 80  # 7.125%
+COV_S1 = COV_S * 0.8 / COV_K #super spreader (s*0.8)/k
+COV_S2 = COV_S * 0.2 / (1 - COV_K) #normal spreader (s*0.2)/(1-k)
 COV_EV = 0.9  # mRNA vaccine effectiveness
 
 # Diagnose Rate
@@ -29,20 +31,22 @@ IR_WW = 0.9  # The infection rate of both without a mask
 IR_MM = 0.01  # both with a mask
 IR_WM = 0.5  # the infected without a mask，the healthy with
 IR_MW = 0.3  # the infected with a mask，the healthy without
+# rate of becoming super spreader
+SUPER_RATE = COV_K
 
-INFECTED_RATE = [[IR_WW * COV_S, IR_MW * COV_S], [IR_WM * COV_S, IR_MM * COV_S]]
+#normal spreader
+INFECTED_RATE = [[IR_WW * COV_S2, IR_MW * COV_S2], [IR_WM * COV_S2, IR_MM * COV_S2]]
 # the healthy with vaccine
-INFECTED_RATE_WITH_VACCINE = [[IR_WW * COV_S * (1 - COV_EV), IR_MW * COV_S * (1 - COV_EV)],
-                              [IR_WM * COV_S * (1 - COV_EV), IR_MM * COV_S * (1 - COV_EV)]]
+INFECTED_RATE_WITH_VACCINE = [[IR_WW * COV_S2 * (1 - COV_EV), IR_MW * COV_S2 * (1 - COV_EV)],
+                              [IR_WM * COV_S2 * (1 - COV_EV), IR_MM * COV_S2 * (1 - COV_EV)]]
 
 VACCINE_RATE = 0.4  # rate of people get vaccine
-# TODO 超级传播者
-INFECTED_RATE_SUPER = [[IR_WW * COV_S, IR_MW * COV_S], [IR_WM * COV_S, IR_MM * COV_S]]
+# infected rate of super spreader
+INFECTED_RATE_SUPER = [[IR_WW * COV_S1, IR_MW * COV_S1], [IR_WM * COV_S1, IR_MM * COV_S1]]
 # the healthy with vaccine
-INFECTED_RATE_WITH_VACCINE_SUPER = [[IR_WW * COV_S * (1 - COV_EV), IR_MW * COV_S * (1 - COV_EV)],
-                              [IR_WM * COV_S * (1 - COV_EV), IR_MM * COV_S * (1 - COV_EV)]]
-# TODO 成为超级传播者的概率
-SUPER_RATE = 0.1
+INFECTED_RATE_WITH_VACCINE_SUPER = [[IR_WW * COV_S1 * (1 - COV_EV), IR_MW * COV_S1 * (1 - COV_EV)],
+                              [IR_WM * COV_S1 * (1 - COV_EV), IR_MM * COV_S1 * (1 - COV_EV)]]
+
 
 
 # Infection Rate -SARS

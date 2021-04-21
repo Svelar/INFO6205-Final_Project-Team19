@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 import datetime
+import random
 import turtle
 
 from person import Person
@@ -44,8 +45,8 @@ count = 0
 while Person.infected_num < Person.total_num:
 
     title = "No. %d Day    All cases：%d    Death cases：%d    Total number of people：%d" % (
-     day, Person.infected_num, Person.dead_num, Person.total_num)
-    # print(title)
+        day, Person.infected_num, Person.dead_num, Person.total_num)
+    #print(title)
     turtle.title(title)
 
     for a in people:
@@ -68,6 +69,7 @@ while Person.infected_num < Person.total_num:
     count += 1
     # count==100, add one day
     if count > 100:
+        print(title)
         day += 1
         count = 0
         for p in people[:]:
